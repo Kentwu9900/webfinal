@@ -1,8 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "首頁";
+    var currentPoints = Context.Session.GetInt32("Points") ?? 0;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center" style="margin-top: 50px;">
+    <h1 class="display-4">🎮 歡迎來到收卡大亨</h1>
+    <p class="lead">這裡可以玩小遊戲、累積點數，並抽卡收藏你的可愛夥伴！</p>
+
+    <div style="margin-top: 20px;">
+        <h4>🎯 你目前擁有的點數：<span style="color: green;">@currentPoints</span></h4>
+    </div>
+
+    <div style="margin-top: 40px;">
+        <a href="/Game/Index" class="btn btn-warning btn-lg" style="margin: 10px;">▶ 進入 Dino Jump 小遊戲</a>
+        <a href="/Pet/Index" class="btn btn-primary btn-lg" style="margin: 10px;">🎁 抽卡專區</a>
+    </div>
 </div>

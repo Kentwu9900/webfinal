@@ -2,11 +2,11 @@
 
 // 加入 MVC 與 Session 支援
 builder.Services.AddControllersWithViews();
-builder.Services.AddSession(); // ✅ 這裡加入 Session
+builder.Services.AddSession(); // ✅ 加入 Session
 
 var app = builder.Build();
 
-// 開始中介層設定
+// 中介層設定
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -18,12 +18,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession();        // ✅ 啟用 Session（一定要放在 UseRouting 之後）
+app.UseSession();        // ✅ 啟用 Session（放在 UseRouting 後）
 app.UseAuthorization();
 
-// 設定路由
+// ✅ 將首頁導向 Home/Index
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=SelectZone}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
