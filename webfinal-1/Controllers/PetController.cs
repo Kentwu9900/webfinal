@@ -7,49 +7,72 @@ namespace webfinal_1.Controllers
 {
     public class PetController : Controller
     {
-        private static readonly List<Card> CardPool = new List<Card>
+        private static readonly Dictionary<string, List<Card>> AllCardPools = new Dictionary<string, List<Card>>
         {
-            new Card { Name = "熊貓", ImageUrl = "/pet card/1.jpg" },
-            new Card { Name = "馬", ImageUrl = "/pet card/2.jpg" },
-            new Card { Name = "狐狸", ImageUrl = "/pet card/3.jpg" },
-            new Card { Name = "青蛙", ImageUrl = "/pet card/4.jpg" },
-            new Card { Name = "黑狗", ImageUrl = "/pet card/5.jpg" },
-            new Card { Name = "海豹", ImageUrl = "/pet card/6.jpg" },
-            new Card { Name = "烏龜", ImageUrl = "/pet card/7.jpg" },
-            new Card { Name = "鳥", ImageUrl = "/pet card/8.jpg" },
-            new Card { Name = "貓頭鷹", ImageUrl = "/pet card/9.jpg" },
-            new Card { Name = "貓咪", ImageUrl = "/pet card/10.jpg" }
+            ["animal"] = new List<Card>
+            {
+                new Card { Name = "熊貓", ImageUrl = "/pet card/1.jpg" },
+                new Card { Name = "馬", ImageUrl = "/pet card/2.jpg" },
+                new Card { Name = "狐狸", ImageUrl = "/pet card/3.jpg" },
+                new Card { Name = "青蛙", ImageUrl = "/pet card/4.jpg" },
+                new Card { Name = "黑狗", ImageUrl = "/pet card/5.jpg" },
+                new Card { Name = "海豹", ImageUrl = "/pet card/6.jpg" },
+                new Card { Name = "烏龜", ImageUrl = "/pet card/7.jpg" },
+                new Card { Name = "鳥", ImageUrl = "/pet card/8.jpg" },
+                new Card { Name = "貓頭鷹", ImageUrl = "/pet card/9.jpg" },
+                new Card { Name = "貓咪", ImageUrl = "/pet card/10.jpg" }
+            },
+            ["car"] = new List<Card>
+            {
+                new Card { Name = "Bentley Flying Spur", ImageUrl = "/car card/bentley flying spur.jpg" },
+                new Card { Name = "Bentley Mulsanne", ImageUrl = "/car card/bentley mulsanne.jpg" },
+                new Card { Name = "Benz E300", ImageUrl = "/car card/benz e300.jpg" },
+                new Card { Name = "Benz USA", ImageUrl = "/car card/benz usa.jpg" },
+                new Card { Name = "BMW X3", ImageUrl = "/car card/bmw x3.jpg" },
+                new Card { Name = "BMW X4", ImageUrl = "/car card/bmw x4.jpg" },
+                new Card { Name = "Porsche 911 GT3 RS", ImageUrl = "/car card/porsche 911 gt3 rs.jpg" },
+                new Card { Name = "Porsche 911", ImageUrl = "/car card/porsche 911.jpg" },
+                new Card { Name = "Toyota GR", ImageUrl = "/car card/toyota gr.jpg" },
+                new Card { Name = "Toyota Supra", ImageUrl = "/car card/toyota supra.jpg" }
+            },
+            ["meme"] = new List<Card>
+            {
+                new Card { Name = "驚恐柴犬", ImageUrl = "/meme card/meme1.jpg" },
+                new Card { Name = "胖虎跳舞", ImageUrl = "/meme card/meme2.jpg" },
+                new Card { Name = "滑稽狗狗", ImageUrl = "/meme card/meme3.jpg" },
+                new Card { Name = "迷因貓貓", ImageUrl = "/meme card/meme4.jpg" },
+                new Card { Name = "表情包經典", ImageUrl = "/meme card/meme5.jpg" }
+            }
         };
 
         private static readonly Dictionary<string, CardStats> cardStatistics = new Dictionary<string, CardStats>();
         private static readonly Random rng = new Random();
 
-        private Card DrawCard()
-        {
-            return CardPool[rng.Next(CardPool.Count)];
-        }
+        private List<Card> GetCardPool(string type) =>
+            AllCardPools.ContainsKey(type) ? AllCardPools[type] : AllCardPools["animal"];
 
-        public IActionResult Index()
+        public IActionResult Index(string type = "animal")
         {
+            ViewBag.Type = type;
             ViewBag.Message = TempData["Message"];
             return View();
         }
 
         [HttpPost]
-        public IActionResult SingleDraw()
+        public IActionResult SingleDraw(string type)
         {
+            var pool = GetCardPool(type);
             int? currentPoints = HttpContext.Session.GetInt32("Points");
             if (currentPoints == null || currentPoints < 5)
             {
                 TempData["Message"] = "點數不足（需要5點）";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { type });
             }
 
             HttpContext.Session.SetInt32("Points", currentPoints.Value - 5);
-            var card = DrawCard();
+            var card = pool[rng.Next(pool.Count)];
             var result = new List<Card> { card };
 
-            // ✅ 抽卡紀錄
             var logs = HttpContext.Session.GetObject<List<DrawRecord>>("DrawLogs") ?? new List<DrawRecord>();
             logs.Add(new DrawRecord
             {
@@ -59,7 +82,6 @@ namespace webfinal_1.Controllers
             });
             HttpContext.Session.SetObject("DrawLogs", logs);
 
-            // ✅ 統計排行榜
             if (cardStatistics.ContainsKey(card.Name))
                 cardStatistics[card.Name].Count++;
             else
@@ -74,13 +96,14 @@ namespace webfinal_1.Controllers
         }
 
         [HttpPost]
-        public IActionResult TenDraw()
+        public IActionResult TenDraw(string type)
         {
+            var pool = GetCardPool(type);
             int? currentPoints = HttpContext.Session.GetInt32("Points");
             if (currentPoints == null || currentPoints < 50)
             {
                 TempData["Message"] = "點數不足（需要50點）";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { type });
             }
 
             HttpContext.Session.SetInt32("Points", currentPoints.Value - 50);
@@ -90,10 +113,9 @@ namespace webfinal_1.Controllers
 
             for (int i = 0; i < 10; i++)
             {
-                var card = DrawCard();
+                var card = pool[rng.Next(pool.Count)];
                 result.Add(card);
 
-                // ✅ 加入紀錄
                 logs.Add(new DrawRecord
                 {
                     CardName = card.Name,
@@ -101,7 +123,6 @@ namespace webfinal_1.Controllers
                     Time = DateTime.Now
                 });
 
-                // ✅ 統計排行榜
                 if (cardStatistics.ContainsKey(card.Name))
                     cardStatistics[card.Name].Count++;
                 else
@@ -118,14 +139,12 @@ namespace webfinal_1.Controllers
             return View("Result", result);
         }
 
-        // ✅ 抽卡紀錄頁面
         public IActionResult History()
         {
             var logs = HttpContext.Session.GetObject<List<DrawRecord>>("DrawLogs") ?? new List<DrawRecord>();
             return View(logs);
         }
 
-        // ✅ 抽卡排行榜頁面
         public IActionResult Ranking()
         {
             var topCards = cardStatistics.Values
