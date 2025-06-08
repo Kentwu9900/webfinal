@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "首頁";
     var currentPoints = Context.Session.GetInt32("Points") ?? 0;
+    var rewardMessage = TempData["RewardMessage"] as string; // ✅ 每日登入訊息
 }
 
 <div class="text-center" style="margin-top: 50px;">
@@ -10,6 +11,13 @@
     <div style="margin-top: 20px;">
         <h4>🎯 你目前擁有的點數：<span style="color: green;">@currentPoints</span></h4>
     </div>
+
+    @if (!string.IsNullOrEmpty(rewardMessage))
+    {
+        <div style="margin-top: 10px; color: orange;">
+            <strong>@rewardMessage</strong>
+        </div>
+    }
 
     <div style="margin-top: 40px;">
         <a href="/Game/Index" class="btn btn-warning btn-lg" style="margin: 10px;">▶ 進入 Dino Jump 小遊戲</a>
