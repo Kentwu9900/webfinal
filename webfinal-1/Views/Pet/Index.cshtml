@@ -1,28 +1,32 @@
 ﻿@{
     ViewData["Title"] = "寵物專區抽卡";
+    var sessionPoints = Context.Session.GetInt32("Points") ?? 0;
 }
+
 <div style="text-align: center; margin-top: 60px;">
     <h1 style="font-size: 2.5rem; color: #2c3e50;">🐾 寵物專區抽卡</h1>
+    <p style="margin-bottom: 10px; color: #666;">目前點數：<strong style="color: darkred;">@sessionPoints</strong></p>
+
+@if (ViewBag.Message != null)
+{
+        <div style="color: red; margin-bottom: 20px;">@ViewBag.Message</div>
+}
+
     <p style="margin-bottom: 30px; color: #666;">請選擇抽卡方式：</p>
 
-    <form asp-action="SingelDraw" method="post" style="display: inline-block; margin: 10px;">
+    <form asp-action="SingleDraw" method="post" style="display: inline-block; margin: 10px;">
         <button type="submit"
                 style="padding: 15px 30px; font-size: 1.2rem; background-color: #3498db; color: white; border: none; border-radius: 8px;">
-            單抽
+            單抽（消耗 5 點）
         </button>
     </form>
 
     <form asp-action="TenDraw" method="post" style="display: inline-block; margin: 10px;">
         <button type="submit"
                 style="padding: 15px 30px; font-size: 1.2rem; background-color: #e67e22; color: white; border: none; border-radius: 8px;">
-            十連抽
+            十連抽（消耗 50 點）
         </button>
     </form>
 
     <div style="margin-top: 30px;">
-        <a href="/Home/SelectZone"
-           style="text-decoration: none; color: white; background-color: #7f8c8d; padding: 10px 20px; border-radius: 6px;">
-            ⬅ 回到專區選擇
-        </a>
-    </div>
-</div>
+        <

@@ -6,7 +6,6 @@ namespace webfinal_1.Controllers
 {
     public class PetController : Controller
     {
-        // 卡池
         private static readonly List<Card> CardPool = new List<Card>
         {
             new Card { Name = "熊貓", ImageUrl = "/pet card/1.jpg" },
@@ -23,21 +22,29 @@ namespace webfinal_1.Controllers
 
         private static readonly Random rng = new Random();
 
-        // 抽一張
         private Card DrawCard()
         {
             return CardPool[rng.Next(CardPool.Count)];
         }
 
-        // 首頁（寵物專區抽卡主頁）
         public IActionResult Index()
         {
+            ViewBag.Message = TempData["Message"];
             return View();
         }
 
         [HttpPost]
-        public IActionResult SingelDraw()
+        public IActionResult SingleDraw()
         {
+            int? currentPoints = HttpContext.Session.GetInt32("Points");
+            if (currentPoints == null || currentPoints < 5)
+            {
+                TempData["Message"] = "點數不足（需要5點）";
+                return RedirectToAction("Index");
+            }
+
+            HttpContext.Session.SetInt32("Points", currentPoints.Value - 5);
+
             var result = new List<Card> { DrawCard() };
             return View("Result", result);
         }
@@ -45,9 +52,19 @@ namespace webfinal_1.Controllers
         [HttpPost]
         public IActionResult TenDraw()
         {
+            int? currentPoints = HttpContext.Session.GetInt32("Points");
+            if (currentPoints == null || currentPoints < 50)
+            {
+                TempData["Message"] = "點數不足（需要50點）";
+                return RedirectToAction("Index");
+            }
+
+            HttpContext.Session.SetInt32("Points", currentPoints.Value - 50);
+
             var result = new List<Card>();
             for (int i = 0; i < 10; i++)
                 result.Add(DrawCard());
+
             return View("Result", result);
         }
     }
