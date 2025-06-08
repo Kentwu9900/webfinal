@@ -7,4 +7,9 @@
     <RootNamespace>webfinal_1</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\Home\play.cshtml" />
+    <Content Remove="Views\Home\play.razor" />
+  </ItemGroup>
+
 </Project>
