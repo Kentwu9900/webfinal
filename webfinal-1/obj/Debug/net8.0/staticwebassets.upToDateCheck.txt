@@ -70,6 +70,16 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\meme\NICE.jpg
+wwwroot\meme\ok.jpg
+wwwroot\meme\WTF.jpg
+wwwroot\meme\亂.jpg
+wwwroot\meme\哭pepe.jpg
+wwwroot\meme\好喔.jpg
+wwwroot\meme\我就爛.jpg
+wwwroot\meme\星爆中.jpg
+wwwroot\meme\謝謝.jpg
+wwwroot\meme\黑人問號.jpg
 wwwroot\pet card\1.jpg
 wwwroot\pet card\10.jpg
 wwwroot\pet card\2.jpg

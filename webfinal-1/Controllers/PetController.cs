@@ -14,7 +14,7 @@ namespace webfinal_1.Controllers
                 new Card { Name = "熊貓", ImageUrl = "/pet card/1.jpg" },
                 new Card { Name = "馬", ImageUrl = "/pet card/2.jpg" },
                 new Card { Name = "狐狸", ImageUrl = "/pet card/3.jpg" },
-                new Card { Name = "青蛙", ImageUrl = "/pet card/4.jpg" },
+                new Card { Name = "小狗", ImageUrl = "/pet card/4.jpg" },
                 new Card { Name = "黑狗", ImageUrl = "/pet card/5.jpg" },
                 new Card { Name = "海豹", ImageUrl = "/pet card/6.jpg" },
                 new Card { Name = "烏龜", ImageUrl = "/pet card/7.jpg" },
@@ -37,11 +37,16 @@ namespace webfinal_1.Controllers
             },
             ["meme"] = new List<Card>
             {
-                new Card { Name = "驚恐柴犬", ImageUrl = "/meme card/meme1.jpg" },
-                new Card { Name = "胖虎跳舞", ImageUrl = "/meme card/meme2.jpg" },
-                new Card { Name = "滑稽狗狗", ImageUrl = "/meme card/meme3.jpg" },
-                new Card { Name = "迷因貓貓", ImageUrl = "/meme card/meme4.jpg" },
-                new Card { Name = "表情包經典", ImageUrl = "/meme card/meme5.jpg" }
+                new Card { Name = "NICE", ImageUrl = "/meme/NICE.jpg" },
+                new Card { Name = "ok", ImageUrl = "/meme/ok.jpg" },
+                new Card { Name = "WTF", ImageUrl = "/meme/WTF.jpg" },
+                new Card { Name = "好喔", ImageUrl = "/meme/好喔.jpg" },
+                new Card { Name = "我就爛", ImageUrl = "/meme/我就爛.jpg" },
+                new Card { Name = "星爆中", ImageUrl = "/meme/星爆中.jpg" },
+                new Card { Name = "哭pepe", ImageUrl = "/meme/哭pepe.jpg" },
+                new Card { Name = "黑人問號", ImageUrl = "/meme/黑人問號.jpg" },
+                new Card { Name = "亂", ImageUrl = "/meme/亂.jpg" },
+                new Card { Name = "謝謝", ImageUrl = "/meme/謝謝.jpg" }
             }
         };
 
